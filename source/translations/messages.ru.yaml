@@ -1,0 +1,13 @@
+base:
+  createdAt: Дата создания
+  updatedAt: Дата обновления
+  add: Добавить
+
+title:
+  authorList: Авторы
+  authorCreate: Добавить автора
+
+author:
+  firstName: Имя
+  lastName: Фамилия
+  secondName: Отчество
