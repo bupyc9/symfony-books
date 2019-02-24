@@ -49,3 +49,10 @@ services:
     working_dir: /var/www
     depends_on:
       - postgres
+
+  node:
+    image: node:10-alpine
+    volumes:
+      - ./source:/var/www
+    command: yarn encore production --watch
+    working_dir: /var/www
