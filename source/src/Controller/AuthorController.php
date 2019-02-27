@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,8 +84,7 @@ class AuthorController extends AbstractController
      * @return Response
      * @throws \LogicException
      *
-     * @ParamConverter(class="App\Entity\Author")
-     * @Route("/authors/{id<\d+>}", name="author_edit", methods={"GET", "HEAD", "POST"})
+     * @Route("/authors/{id<\d+>}/edit", name="author_edit", methods={"GET", "HEAD", "POST"})
      */
     public function edit(Author $author, Request $request): Response
     {
@@ -108,5 +108,21 @@ class AuthorController extends AbstractController
         }
 
         return $this->render('author/edit.html.twig', ['form' => $form->createView(), 'author' => $author]);
+    }
+
+    /**
+     * @param Author $author
+     * @return JsonResponse
+     * @throws \LogicException
+     *
+     * @Route("/authors/{id<\d+>}", name="author_delete", methods={"DELETE", "HEAD"})
+     */
+    public function delete(Author $author): JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($author);
+        $em->flush();
+
+        return new JsonResponse();
     }
 }

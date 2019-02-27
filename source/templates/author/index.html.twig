@@ -34,6 +34,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ path('author_edit', {'id': author.id}) }}"><span class="oi oi-pencil"></span>&nbsp;Edit</a>
+                            <a class="dropdown-item author_delete-js" href="{{ path('author_delete', {'id': author.id}) }}"><span class="oi oi-minus"></span>&nbsp;Delete</a>
                         </div>
                     </div>
                 </td>
