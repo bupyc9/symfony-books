@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.bookCreate'|trans }}{% endblock %}
+{% block h1 %}{{ 'title.bookCreate'|trans }}{% endblock %}
+
+{% block body %}
+    {{ form_errors(form) }}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

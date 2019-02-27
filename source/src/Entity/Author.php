@@ -128,4 +128,9 @@ class Author
     {
         return $this->firstName . ' ' . $this->lastName . ' ' . $this->secondName;
     }
+
+    public function __toString(): string
+    {
+        return $this->getFio();
+    }
 }

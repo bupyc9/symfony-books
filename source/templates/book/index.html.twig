@@ -4,6 +4,7 @@
 {% block h1 %}{{ 'title.bookList'|trans }}{% endblock %}
 
 {% block body %}
+    <a href="{{ path('book_create') }}" class="btn btn-primary mb-2">{{ 'base.add'|trans }}</a>
     <table class="table">
         <thead>
         <tr>
