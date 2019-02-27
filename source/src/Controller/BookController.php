@@ -62,7 +62,7 @@ class BookController extends AbstractController
 
         $form = $this->createFormBuilder($book)
             ->add('name', TextType::class, ['label' => 'book.name', 'attr' => ['maxlength' => 255]])
-            ->add('author', EntityType::class, ['class' => Author::class, 'choices' => $authors])
+            ->add('author', EntityType::class, ['label' => 'book.author', 'class' => Author::class, 'choices' => $authors])
             ->add('year', IntegerType::class, ['label' => 'book.year'])
             ->add('pages', IntegerType::class, ['label' => 'book.pages'])
             ->add('save', SubmitType::class, ['label' => $this->translator->trans('base.add')])
@@ -96,7 +96,7 @@ class BookController extends AbstractController
 
         $form = $this->createFormBuilder($book)
             ->add('name', TextType::class, ['label' => 'book.name', 'attr' => ['maxlength' => 255]])
-            ->add('author', EntityType::class, ['class' => Author::class, 'choices' => $authors])
+            ->add('author', EntityType::class, ['label' => 'book.author', 'class' => Author::class, 'choices' => $authors])
             ->add('year', IntegerType::class, ['label' => 'book.year'])
             ->add('pages', IntegerType::class, ['label' => 'book.pages'])
             ->add('save', SubmitType::class, ['label' => $this->translator->trans('base.add')])

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Books{% endblock %}
+
+{% block body %}
+    <div class="card-deck">
+        {% for book in books %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ book.author.fio }}</h6>
+                    <small class="text-muted">{{ 'base.year' | trans({'%year%': book.year}) }}</small>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

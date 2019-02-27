@@ -4,6 +4,7 @@ base:
   add: Добавить
   edit: Изменить
   notFound: Элемент не найден
+  year: '%year% г.'
 
 title:
   authorList: Авторы
