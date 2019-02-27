@@ -14,6 +14,7 @@
             <th scope="col">{{ 'author.firstName'|trans }}</th>
             <th scope="col">{{ 'author.lastName'|trans }}</th>
             <th scope="col">{{ 'author.secondName'|trans }}</th>
+            <th scope="col">{{ 'author.countBooks'|trans }}</th>
             <th scope="col"></th>
         </tr>
         </thead>
@@ -21,11 +22,12 @@
         {% for author in authors %}
             <tr>
                 <th scope="row">{{ author.id }}</th>
-                <td>{{ author.createdAt.format('d.m.Y H:i:s') }}</td>
-                <td>{{ author.updatedAt.format('d.m.Y H:i:s') }}</td>
+                <td>{{ author.createdAt | date('d.m.Y H:i:s') }}</td>
+                <td>{{ author.updatedAt | date('d.m.Y H:i:s') }}</td>
                 <td>{{ author.firstName }}</td>
                 <td>{{ author.lastName }}</td>
                 <td>{{ author.secondName }}</td>
+                <td>{{ author.countBooks }}</td>
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton"

@@ -17,6 +17,7 @@ author:
   firstName: Имя
   lastName: Фамилия
   secondName: Отчество
+  countBooks: Количество книг
 
 menu:
   authors: Авторы

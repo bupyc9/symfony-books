@@ -47,6 +47,12 @@ class Author
      */
     private $books;
 
+    /**
+     * @var integer
+     * @ORM\Column(type="integer")
+     */
+    private $countBooks = 0;
+
     public function __construct()
     {
         $this->books = new ArrayCollection();
@@ -132,5 +138,17 @@ class Author
     public function __toString(): string
     {
         return $this->getFio();
+    }
+
+    public function getCountBooks(): int
+    {
+        return $this->countBooks;
+    }
+
+    public function setCountBooks(int $countBooks): self
+    {
+        $this->countBooks = $countBooks;
+
+        return $this;
     }
 }
