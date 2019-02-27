@@ -15,6 +15,7 @@
             <th scope="col">{{ 'book.author'|trans }}</th>
             <th scope="col">{{ 'book.year'|trans }}</th>
             <th scope="col">{{ 'book.pages'|trans }}</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -27,6 +28,17 @@
                 <td>{{ book.author.fio }}</td>
                 <td>{{ book.year }}</td>
                 <td>{{ book.pages }}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="oi oi-menu"></span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ path('book_edit', {'id': book.id}) }}"><span class="oi oi-pencil"></span>&nbsp;Edit</a>
+                        </div>
+                    </div>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

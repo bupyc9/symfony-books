@@ -80,4 +80,38 @@ class BookController extends AbstractController
 
         return $this->render('book/create.html.twig', ['form' => $form->createView()]);
     }
+
+    /**
+     * @param Book $book
+     * @param Request $request
+     * @return Response
+     * @throws \LogicException
+     *
+     * @Route("/books/{id<\d+>}/edit", name="book_edit", methods={"GET", "HEAD", "POST"})
+     */
+    public function edit(Book $book, Request $request): Response
+    {
+        $authors = $this->getDoctrine()->getRepository(Author::class)->findAll();
+
+        $form = $this->createFormBuilder($book)
+            ->add('name', TextType::class, ['label' => 'book.name', 'attr' => ['maxlength' => 255]])
+            ->add('author', EntityType::class, ['class' => Author::class, 'choices' => $authors])
+            ->add('year', IntegerType::class, ['label' => 'book.year'])
+            ->add('pages', IntegerType::class, ['label' => 'book.pages'])
+            ->add('save', SubmitType::class, ['label' => $this->translator->trans('base.add')])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $book = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($book);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('books');
+        }
+
+        return $this->render('book/edit.html.twig', ['form' => $form->createView(), 'book' => $book]);
+    }
 }

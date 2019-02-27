@@ -11,6 +11,7 @@ title:
   authorEdit: Редактировать автора №%id%
   bookList: Книги
   bookCreate: Добавить книгу
+  bookEdit: Редактировать книгу №%id%
 
 author:
   firstName: Имя
