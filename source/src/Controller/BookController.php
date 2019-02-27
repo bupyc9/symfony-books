@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -113,5 +114,21 @@ class BookController extends AbstractController
         }
 
         return $this->render('book/edit.html.twig', ['form' => $form->createView(), 'book' => $book]);
+    }
+
+    /**
+     * @param Book $book
+     * @return JsonResponse
+     * @throws \LogicException
+     *
+     * @Route("/books/{id<\d+>}", name="book_delete", methods={"DELETE", "HEAD"})
+     */
+    public function delete(Book $book): JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($book);
+        $em->flush();
+
+        return new JsonResponse();
     }
 }
