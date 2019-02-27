@@ -123,4 +123,9 @@ class Author
 
         return $this;
     }
+
+    public function getFio(): string
+    {
+        return $this->firstName . ' ' . $this->lastName . ' ' . $this->secondName;
+    }
 }

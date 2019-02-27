@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.bookList'|trans }}{% endblock %}
+{% block h1 %}{{ 'title.bookList'|trans }}{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">{{ 'base.createdAt'|trans }}</th>
+            <th scope="col">{{ 'base.updatedAt'|trans }}</th>
+            <th scope="col">{{ 'book.name'|trans }}</th>
+            <th scope="col">{{ 'book.author'|trans }}</th>
+            <th scope="col">{{ 'book.year'|trans }}</th>
+            <th scope="col">{{ 'book.pages'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <th scope="row">{{ book.id }}</th>
+                <td>{{ book.createdAt | date('d.m.Y H:i:s') }}</td>
+                <td>{{ book.updatedAt | date('d.m.Y H:i:s') }}</td>
+                <td>{{ book.name }}</td>
+                <td>{{ book.author.fio }}</td>
+                <td>{{ book.year }}</td>
+                <td>{{ book.pages }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

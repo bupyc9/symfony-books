@@ -9,8 +9,19 @@ title:
   authorList: Авторы
   authorCreate: Добавить автора
   authorEdit: Редактировать автора №%id%
+  bookList: Книги
 
 author:
   firstName: Имя
   lastName: Фамилия
   secondName: Отчество
+
+menu:
+  authors: Авторы
+  books: Книги
+
+book:
+  name: Название
+  year: Год
+  pages: Количество страниц
+  author: Автор
