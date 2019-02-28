@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'title.bookEdit'|trans }}{% endblock %}
+{% block title %}{{ 'title.bookEdit'|trans({'%id%': book.id}) }}{% endblock %}
 {% block h1 %}{{ 'title.bookEdit'|trans({'%id%': book.id}) }}{% endblock %}
 
 {% block body %}
