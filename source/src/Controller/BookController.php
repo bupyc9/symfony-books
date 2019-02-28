@@ -99,7 +99,7 @@ class BookController extends AbstractController
             ->add('author', EntityType::class, ['label' => 'book.author', 'class' => Author::class, 'choices' => $authors])
             ->add('year', IntegerType::class, ['label' => 'book.year'])
             ->add('pages', IntegerType::class, ['label' => 'book.pages'])
-            ->add('save', SubmitType::class, ['label' => $this->translator->trans('base.add')])
+            ->add('save', SubmitType::class, ['label' => $this->translator->trans('base.edit')])
             ->getForm();
 
         $form->handleRequest($request);
