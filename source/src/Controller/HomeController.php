@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Book;
@@ -20,6 +22,7 @@ class HomeController extends AbstractController
 
     /**
      * @param PaginatorInterface $paginator
+     *
      * @return HomeController
      *
      * @required
@@ -33,8 +36,10 @@ class HomeController extends AbstractController
 
     /**
      * @param Request $request
-     * @return Response
+     *
      * @throws \LogicException
+     *
+     * @return Response
      *
      * @Route("/", name="home", methods={"GET", "HEAD"})
      */

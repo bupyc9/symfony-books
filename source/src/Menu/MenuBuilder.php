@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Menu;
 
 use Knp\Menu\FactoryInterface;
@@ -28,8 +30,10 @@ class MenuBuilder
 
     /**
      * @param array $options
-     * @return ItemInterface
+     *
      * @throws \InvalidArgumentException
+     *
+     * @return ItemInterface
      */
     public function createMainMenu(array $options): ItemInterface
     {

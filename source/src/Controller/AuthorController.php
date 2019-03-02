@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Author;
@@ -29,6 +31,7 @@ class AuthorController extends AbstractController
 
     /**
      * @param TranslatorInterface $translator
+     *
      * @return AuthorController
      *
      * @required
@@ -42,6 +45,7 @@ class AuthorController extends AbstractController
 
     /**
      * @param PaginatorInterface $paginator
+     *
      * @return AuthorController
      *
      * @required
@@ -49,14 +53,18 @@ class AuthorController extends AbstractController
     public function setPaginator(PaginatorInterface $paginator): self
     {
         $this->paginator = $paginator;
+
         return $this;
     }
 
     /**
      * @Route("/authors", name="authors", methods={"GET", "HEAD"})
+     *
      * @param Request $request
-     * @return Response
+     *
      * @throws \LogicException
+     *
+     * @return Response
      */
     public function index(Request $request): Response
     {
@@ -69,8 +77,10 @@ class AuthorController extends AbstractController
 
     /**
      * @param Request $request
-     * @return Response
+     *
      * @throws \LogicException
+     *
+     * @return Response
      *
      * @Route("/authors/create", name="author_create", methods={"GET", "HEAD", "POST"})
      */
@@ -101,10 +111,12 @@ class AuthorController extends AbstractController
     }
 
     /**
-     * @param Author $author
+     * @param Author  $author
      * @param Request $request
-     * @return Response
+     *
      * @throws \LogicException
+     *
+     * @return Response
      *
      * @Route("/authors/{id<\d+>}/edit", name="author_edit", methods={"GET", "HEAD", "POST"})
      */
@@ -134,8 +146,10 @@ class AuthorController extends AbstractController
 
     /**
      * @param Author $author
-     * @return JsonResponse
+     *
      * @throws \LogicException
+     *
+     * @return JsonResponse
      *
      * @Route("/authors/{id<\d+>}", name="author_delete", methods={"DELETE", "HEAD"})
      */

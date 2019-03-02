@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Author;
@@ -32,6 +34,7 @@ class BookController extends AbstractController
 
     /**
      * @param TranslatorInterface $translator
+     *
      * @return BookController
      *
      * @required
@@ -45,6 +48,7 @@ class BookController extends AbstractController
 
     /**
      * @param PaginatorInterface $paginator
+     *
      * @return BookController
      *
      * @required
@@ -52,13 +56,16 @@ class BookController extends AbstractController
     public function setPaginator(PaginatorInterface $paginator): self
     {
         $this->paginator = $paginator;
+
         return $this;
     }
 
     /**
      * @param Request $request
-     * @return Response
+     *
      * @throws \LogicException
+     *
+     * @return Response
      * @Route("/books", name="books", methods={"GET", "HEAD"})
      */
     public function index(Request $request): Response
@@ -72,8 +79,10 @@ class BookController extends AbstractController
 
     /**
      * @param Request $request
-     * @return Response
+     *
      * @throws \LogicException
+     *
+     * @return Response
      *
      * @Route("/books/create", name="book_create", methods={"GET", "HEAD", "POST"})
      */
@@ -105,10 +114,12 @@ class BookController extends AbstractController
     }
 
     /**
-     * @param Book $book
+     * @param Book    $book
      * @param Request $request
-     * @return Response
+     *
      * @throws \LogicException
+     *
+     * @return Response
      *
      * @Route("/books/{id<\d+>}/edit", name="book_edit", methods={"GET", "HEAD", "POST"})
      */
@@ -140,8 +151,10 @@ class BookController extends AbstractController
 
     /**
      * @param Book $book
-     * @return JsonResponse
+     *
      * @throws \LogicException
+     *
+     * @return JsonResponse
      *
      * @Route("/books/{id<\d+>}", name="book_delete", methods={"DELETE", "HEAD"})
      */

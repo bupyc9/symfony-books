@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -48,7 +50,7 @@ class Author
     private $books;
 
     /**
-     * @var integer
+     * @var int
      * @ORM\Column(type="integer")
      */
     private $countBooks = 0;
@@ -56,6 +58,11 @@ class Author
     public function __construct()
     {
         $this->books = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFio();
     }
 
     public function getId(): ?int
@@ -132,12 +139,7 @@ class Author
 
     public function getFio(): string
     {
-        return $this->firstName . ' ' . $this->lastName . ' ' . $this->secondName;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getFio();
+        return $this->firstName.' '.$this->lastName.' '.$this->secondName;
     }
 
     public function getCountBooks(): int

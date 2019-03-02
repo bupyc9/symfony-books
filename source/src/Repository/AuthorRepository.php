@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Author;
@@ -14,37 +16,13 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class AuthorRepository extends ServiceEntityRepository
 {
+    /**
+     * @param RegistryInterface $registry
+     *
+     * @throws \LogicException
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Author::class);
     }
-
-    // /**
-    //  * @return Author[] Returns an array of Author objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Author
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
