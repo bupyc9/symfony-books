@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Author;
 use App\Entity\Book;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -17,10 +18,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BookController extends AbstractController
 {
+    private const ITEMS_ON_PAGE = 10;
+
     /**
      * @var TranslatorInterface
      */
     private $translator;
+
+    /**
+     * @var PaginatorInterface
+     */
+    private $paginator;
 
     /**
      * @param TranslatorInterface $translator
@@ -36,14 +44,28 @@ class BookController extends AbstractController
     }
 
     /**
+     * @param PaginatorInterface $paginator
+     * @return BookController
+     *
+     * @required
+     */
+    public function setPaginator(PaginatorInterface $paginator): self
+    {
+        $this->paginator = $paginator;
+        return $this;
+    }
+
+    /**
+     * @param Request $request
      * @return Response
      * @throws \LogicException
-     *
      * @Route("/books", name="books", methods={"GET", "HEAD"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $books = $this->getDoctrine()->getRepository(Book::class)->findAll();
+        $query = $this->getDoctrine()->getRepository(Book::class)->createQueryBuilder('self')->getQuery();
+        $page = $request->query->getInt('page', 1);
+        $books = $this->paginator->paginate($query, $page, self::ITEMS_ON_PAGE);
 
         return $this->render('book/index.html.twig', ['books' => $books]);
     }
