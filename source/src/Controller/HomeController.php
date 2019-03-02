@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    private const ITEMS_ON_PAGE = 10;
+    private const ITEMS_ON_PAGE = 9;
 
     /**
      * @var PaginatorInterface
