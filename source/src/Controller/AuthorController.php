@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Author;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,10 +15,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AuthorController extends AbstractController
 {
+    private const ITEMS_ON_PAGE = 10;
+
     /**
      * @var TranslatorInterface
      */
     private $translator;
+
+    /**
+     * @var PaginatorInterface
+     */
+    private $paginator;
 
     /**
      * @param TranslatorInterface $translator
@@ -33,13 +41,28 @@ class AuthorController extends AbstractController
     }
 
     /**
+     * @param PaginatorInterface $paginator
+     * @return AuthorController
+     *
+     * @required
+     */
+    public function setPaginator(PaginatorInterface $paginator): self
+    {
+        $this->paginator = $paginator;
+        return $this;
+    }
+
+    /**
      * @Route("/authors", name="authors", methods={"GET", "HEAD"})
+     * @param Request $request
+     * @return Response
      * @throws \LogicException
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $repository = $this->getDoctrine()->getRepository(Author::class);
-        $authors = $repository->findAll();
+        $query = $this->getDoctrine()->getRepository(Author::class)->createQueryBuilder('self')->getQuery();
+        $page = $request->query->getInt('page', 1);
+        $authors = $this->paginator->paginate($query, $page, self::ITEMS_ON_PAGE);
 
         return $this->render('author/index.html.twig', ['authors' => $authors]);
     }
