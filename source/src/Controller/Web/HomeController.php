@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Web;
 
 use App\Entity\Book;
 use Knp\Component\Pager\PaginatorInterface;
