@@ -54,4 +54,18 @@ class AuthorController extends AbstractFOSRestController
 
         return $this->view($dto);
     }
+
+    /**
+     * @param Author $author
+     *
+     * @return View
+     *
+     * @Rest\Get("/authors/{id<\d+>}", name="api_author_show")
+     */
+    public function show(Author $author): View
+    {
+        $dto = new ResultDTO($author);
+
+        return $this->view($dto);
+    }
 }
