@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\DTO\ResultDTO;
+use App\DTO\SuccessDTO;
 use App\Entity\Author;
 use App\Pagination\PaginationFactory;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -65,6 +66,26 @@ class AuthorController extends AbstractFOSRestController
     public function show(Author $author): View
     {
         $dto = new ResultDTO($author);
+
+        return $this->view($dto);
+    }
+
+    /**
+     * @param Author $author
+     *
+     * @throws \LogicException
+     *
+     * @return View
+     *
+     * @Rest\Delete("/authors/{id<\d+>}", name="author_destroy")
+     */
+    public function destroy(Author $author): View
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($author);
+        $em->flush();
+
+        $dto = new ResultDTO(new SuccessDTO());
 
         return $this->view($dto);
     }
