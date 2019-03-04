@@ -9,3 +9,8 @@ fos_rest:
     format_listener:
         rules:
             - { path: ^/api, prefer_extension: true, fallback_format: json, priorities: [ json ] }
+            - { path: '^/', priorities: [ 'html', '*/*'], fallback_format: ~, prefer_extension: true }
+    exception:
+        exception_controller: 'App\Controller\Api\ExceptionController:showAction'
+        codes:
+            'Pagerfanta\Exception\OutOfRangeCurrentPageException': 404

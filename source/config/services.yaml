@@ -35,3 +35,7 @@ services:
     App\EventListener\CountBooksByAuthorSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    App\Controller\Api\ExceptionController:
+        arguments: ['@fos_rest.view_handler', '@fos_rest.exception.codes_map', true]
+        tags: ['controller.service_arguments']
