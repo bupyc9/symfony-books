@@ -44,7 +44,7 @@ class Book
     /**
      * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="App\Entity\Author", inversedBy="books")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $author;
 
