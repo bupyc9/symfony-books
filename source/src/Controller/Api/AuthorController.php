@@ -83,7 +83,7 @@ class AuthorController extends AbstractFOSRestController
      *
      * @return View
      *
-     * @Rest\Delete("/authors/{id<\d+>}", name="author_destroy")
+     * @Rest\Delete("/authors/{id<\d+>}", name="api_author_destroy")
      */
     public function destroy(Author $author): View
     {
@@ -104,7 +104,7 @@ class AuthorController extends AbstractFOSRestController
      *
      * @return View
      *
-     * @Rest\Post("/authors", name="author_store")
+     * @Rest\Post("/authors", name="api_author_store")
      */
     public function store(Request $request): View
     {
@@ -143,7 +143,7 @@ class AuthorController extends AbstractFOSRestController
      *
      * @return View
      *
-     * @Rest\Put("/authors/{id<\d+>}", name="author_update")
+     * @Rest\Put("/authors/{id<\d+>}", name="api_author_update")
      */
     public function update(Author $author, Request $request): View
     {
