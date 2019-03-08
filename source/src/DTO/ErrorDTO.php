@@ -16,6 +16,11 @@ class ErrorDTO
      */
     private $message;
 
+    /**
+     * @var array
+     */
+    private $errors = [];
+
     public function __construct(int $status, string $message)
     {
         $this->status = $status;
@@ -42,6 +47,18 @@ class ErrorDTO
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+
+    public function setErrors(array $errors): self
+    {
+        $this->errors = $errors;
 
         return $this;
     }
