@@ -133,4 +133,42 @@ class AuthorController extends AbstractFOSRestController
 
         return $this->view($result);
     }
+
+    /**
+     * @param Author  $author
+     * @param Request $request
+     *
+     * @throws AlreadySubmittedException
+     * @throws LogicException
+     *
+     * @return View
+     *
+     * @Rest\Put("/authors/{id<\d+>}", name="author_update")
+     */
+    public function update(Author $author, Request $request): View
+    {
+        $dto = new StoreAuthorDTO();
+        $form = $this->createForm(StoreAuthorForm::class, $dto);
+        $form->submit($request->request->all());
+
+        if (!$form->isValid()) {
+            throw new FormValidationException($form);
+        }
+
+        $author
+            ->setFirstName($dto->getFirstName())
+            ->setLastName($dto->getLastName())
+        ;
+        if ('' !== $dto->getSecondName()) {
+            $author->setSecondName($dto->getSecondName());
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($author);
+        $em->flush();
+
+        $result = new ResultDTO($author);
+
+        return $this->view($result);
+    }
 }
