@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\DTO\ResultDTO;
+use App\DTO\SuccessDTO;
 use App\Entity\Book;
 use App\Pagination\PaginationFactory;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -65,6 +66,26 @@ class BookController extends AbstractFOSRestController
     public function show(Book $book): View
     {
         $dto = new ResultDTO($book);
+
+        return $this->view($dto);
+    }
+
+    /**
+     * @param Book $book
+     *
+     * @throws \LogicException
+     *
+     * @return View
+     *
+     * @Rest\Delete("/books/{id<\d+>}", name="api_book_destroy")
+     */
+    public function destroy(Book $book): View
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($book);
+        $em->flush();
+
+        $dto = new ResultDTO(new SuccessDTO());
 
         return $this->view($dto);
     }
