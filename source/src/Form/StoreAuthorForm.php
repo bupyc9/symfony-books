@@ -19,9 +19,4 @@ class StoreAuthorForm extends AbstractForm
             ->add('second_name', TextType::class)
         ;
     }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
-    }
 }
