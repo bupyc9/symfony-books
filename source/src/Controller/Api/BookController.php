@@ -132,4 +132,41 @@ class BookController extends AbstractFOSRestController
 
         return $this->view($result);
     }
+
+    /**
+     * @param Book    $book
+     * @param Request $request
+     *
+     * @throws AlreadySubmittedException
+     * @throws LogicException
+     *
+     * @return View
+     *
+     * @Rest\Put("/books/{id<\d+>}", name="api_book_update")
+     */
+    public function update(Book $book, Request $request): View
+    {
+        $dto = new StoreBookDTO();
+        $form = $this->createForm(StoreBookForm::class, $dto);
+        $form->submit($request->request->all());
+
+        if (!$form->isValid()) {
+            throw new FormValidationException($form);
+        }
+
+        $book
+            ->setName($dto->getName())
+            ->setAuthor($dto->getAuthor())
+            ->setYear($dto->getYear())
+            ->setPages($dto->getPages())
+        ;
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($book);
+        $em->flush();
+
+        $result = new ResultDTO($book);
+
+        return $this->view($result);
+    }
 }
