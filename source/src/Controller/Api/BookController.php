@@ -54,4 +54,18 @@ class BookController extends AbstractFOSRestController
 
         return $this->view($dto);
     }
+
+    /**
+     * @param Book $book
+     *
+     * @return View
+     *
+     * @Rest\Get("/books/{id<\d+>}", name="api_book_show")
+     */
+    public function show(Book $book): View
+    {
+        $dto = new ResultDTO($book);
+
+        return $this->view($dto);
+    }
 }
