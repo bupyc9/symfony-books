@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'ru'
+    redis_host: '%env(REDIS_HOST)%'
+    redis_provider: '%env(REDIS_PROVIDER)%'
 
 services:
     # default configuration for services in *this* file
@@ -39,3 +41,7 @@ services:
     App\Controller\Api\ExceptionController:
         arguments: ['@fos_rest.view_handler', '@fos_rest.exception.codes_map', true]
         tags: ['controller.service_arguments']
+
+    Symfony\Component\Cache\Adapter\TagAwareAdapterInterface:
+        class: Symfony\Component\Cache\Adapter\TagAwareAdapter
+        arguments: ['@Symfony\Component\Cache\Adapter\AdapterInterface']
