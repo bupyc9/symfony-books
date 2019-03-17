@@ -32,10 +32,12 @@ services:
       args:
         - INSTALL_XDEBUG=true
         - INSTALL_OPCACHE=true
+        - INSTALL_REDIS=true
     volumes:
       - ./source:/var/www:cached
     depends_on:
       - postgres
+      - redis
     expose:
       - "9000"
 
@@ -44,11 +46,13 @@ services:
       context: ./docker/php-cli
       args:
         - INSTALL_XDEBUG=true
+        - INSTALL_REDIS=true
     volumes:
       - ./source:/var/www:cached
     working_dir: /var/www
     depends_on:
       - postgres
+      - redis
 
   node:
     image: node:10-alpine
@@ -56,3 +60,8 @@ services:
       - ./source:/var/www
     command: yarn encore production --watch
     working_dir: /var/www
+
+  redis:
+    image: redis:alpine
+    expose:
+      - "6379"
