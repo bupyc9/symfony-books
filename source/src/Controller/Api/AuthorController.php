@@ -146,7 +146,7 @@ class AuthorController extends AbstractFOSRestController
      */
     public function index(ParamFetcher $paramFetcher): View
     {
-        $cacheKey = Cache::createKey(__METHOD__);
+        $cacheKey = Cache::createKey(__METHOD__, $paramFetcher->all());
         $item = $this->cache->getItem($cacheKey);
         if (!$item->isHit()) {
             $queryBuilder = $this->repository->createQueryBuilder('self');

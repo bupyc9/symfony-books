@@ -6,8 +6,10 @@ namespace App\Service;
 
 class Cache
 {
-    public static function createKey(string $tag): string
+    public static function createKey(string $tag, array $data = []): string
     {
-        return \str_replace(['\\', ':', '{', '}', '@', '(', ')', '/'], '_', $tag);
+        $tag = \str_replace(['\\', ':', '{', '}', '@', '(', ')', '/'], '_', $tag);
+
+        return \md5($tag.\json_encode($data));
     }
 }
