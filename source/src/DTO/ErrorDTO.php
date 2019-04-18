@@ -4,20 +4,32 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
+use Swagger\Annotations as SWG;
+
 class ErrorDTO
 {
     /**
      * @var int
+     *
+     * @SWG\Property(type="integer", property="status")
      */
     private $status;
 
     /**
      * @var string
+     *
+     * @SWG\Property(type="string", property="message")
      */
     private $message;
 
     /**
      * @var array
+     *
+     * @SWG\Property(
+     *     type="array",
+     *     property="errors",
+     *     @SWG\Items(type="string"), example={"message", "code": {"message 1", "message 2"}},
+     * )
      */
     private $errors = [];
 

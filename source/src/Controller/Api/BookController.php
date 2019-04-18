@@ -19,8 +19,10 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\View\View;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Psr\Cache\CacheException;
 use Psr\Cache\InvalidArgumentException;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Form\Exception\AlreadySubmittedException;
 use Symfony\Component\Form\Exception\LogicException;
@@ -89,6 +91,8 @@ class BookController extends AbstractFOSRestController
     }
 
     /**
+     * List of books.
+     *
      * @param ParamFetcher $paramFetcher
      *
      * @throws CacheException
@@ -101,6 +105,46 @@ class BookController extends AbstractFOSRestController
      * @Rest\Get("/books", name="api_books")
      * @Rest\QueryParam(name="page", default="1", allowBlank=false, requirements="\d+")
      * @Rest\QueryParam(name="count", default=BookController::ITEMS_ON_PAGE, allowBlank=false, requirements="\d+")
+     *
+     * @SWG\Tag(name="Books")
+     *
+     * @SWG\Parameter(
+     *     name="page",
+     *     in="query",
+     *     type="integer",
+     *     default="1",
+     * )
+     * @SWG\Parameter(
+     *     name="count",
+     *     in="query",
+     *     type="integer",
+     *     default=BookController::ITEMS_ON_PAGE,
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Return book list",
+     *     @SWG\Schema(
+     *         type=ResultDTO::class,
+     *         @SWG\Property(
+     *             property="data",
+     *             type="object",
+     *             @SWG\Property(
+     *                 property="items", @SWG\Items(ref=@Model(type=Book::class)),
+     *             ),
+     *             @SWG\Property(
+     *                 property="meta", ref=@Model(type=\App\DTO\CollectionMetaDTO::class),
+     *             ),
+     *             @SWG\Property(
+     *                 property="links", ref=@Model(type=\App\DTO\LinksDTO::class),
+     *             ),
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Page not found",
+     *     @SWG\Schema(ref=@Model(type=App\DTO\ErrorsDTO::class)),
+     * )
      */
     public function index(ParamFetcher $paramFetcher): View
     {
@@ -127,6 +171,8 @@ class BookController extends AbstractFOSRestController
     }
 
     /**
+     * Book detail.
+     *
      * @param int $id
      *
      * @throws CacheException
@@ -136,6 +182,31 @@ class BookController extends AbstractFOSRestController
      * @return View
      *
      * @Rest\Get("/books/{id<\d+>}", name="api_book_show")
+     *
+     * @SWG\Tag(name="Books")
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="integer",
+     *     description="Book ID",
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Return book detail",
+     *     @SWG\Schema(
+     *         type=ResultDTO::class,
+     *         @SWG\Property(
+     *             property="data",
+     *             ref=@Model(type=Book::class)
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Book not found",
+     *     @SWG\Schema(ref=@Model(type=App\DTO\ErrorsDTO::class)),
+     * )
      */
     public function show(int $id): View
     {
@@ -166,6 +237,8 @@ class BookController extends AbstractFOSRestController
     }
 
     /**
+     * Remove book.
+     *
      * @param Book $book
      *
      * @throws InvalidArgumentException
@@ -174,6 +247,31 @@ class BookController extends AbstractFOSRestController
      * @return View
      *
      * @Rest\Delete("/books/{id<\d+>}", name="api_book_destroy")
+     *
+     * @SWG\Tag(name="Books")
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="integer",
+     *     description="Book ID",
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @SWG\Schema(
+     *         type=ResultDTO::class,
+     *         @SWG\Property(
+     *             property="data",
+     *             ref=@Model(type=SuccessDTO::class),
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Book not found",
+     *     @SWG\Schema(ref=@Model(type=App\DTO\ErrorsDTO::class)),
+     * )
      */
     public function destroy(Book $book): View
     {
@@ -189,6 +287,8 @@ class BookController extends AbstractFOSRestController
     }
 
     /**
+     * Create book.
+     *
      * @param Request $request
      *
      * @throws AlreadySubmittedException
@@ -199,6 +299,50 @@ class BookController extends AbstractFOSRestController
      * @return View
      *
      * @Rest\Post("/books", name="api_book_store")
+     *
+     * @SWG\Tag(name="Books")
+     *
+     * @SWG\Parameter(
+     *     name="name",
+     *     type="string",
+     *     in="formData",
+     *     required=true,
+     *     description="Min length - 1, Max length - 255",
+     * )
+     * @SWG\Parameter(
+     *     name="author",
+     *     type="integer",
+     *     in="formData",
+     *     required=true,
+     * )
+     * @SWG\Parameter(
+     *     name="year",
+     *     type="integer",
+     *     in="formData",
+     *     required=true,
+     * )
+     * @SWG\Parameter(
+     *     name="pages",
+     *     type="integer",
+     *     in="formData",
+     *     required=true,
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Return book detail",
+     *     @SWG\Schema(
+     *         type=ResultDTO::class,
+     *         @SWG\Property(
+     *             property="data",
+     *             ref=@Model(type=Book::class)
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=422,
+     *     description="Validation error",
+     *     @SWG\Schema(ref=@Model(type=App\DTO\ErrorsDTO::class)),
+     * )
      */
     public function store(Request $request): View
     {
@@ -230,6 +374,8 @@ class BookController extends AbstractFOSRestController
     }
 
     /**
+     * Edit book.
+     *
      * @param Book    $book
      * @param Request $request
      *
@@ -241,6 +387,56 @@ class BookController extends AbstractFOSRestController
      * @return View
      *
      * @Rest\Put("/books/{id<\d+>}", name="api_book_update")
+     *
+     * @SWG\Tag(name="Books")
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="integer",
+     *     description="Book ID",
+     * )
+     * @SWG\Parameter(
+     *     name="name",
+     *     type="string",
+     *     in="formData",
+     *     required=true,
+     *     description="Min length - 1, Max length - 255",
+     * )
+     * @SWG\Parameter(
+     *     name="author",
+     *     type="integer",
+     *     in="formData",
+     *     required=true,
+     * )
+     * @SWG\Parameter(
+     *     name="year",
+     *     type="integer",
+     *     in="formData",
+     *     required=true,
+     * )
+     * @SWG\Parameter(
+     *     name="pages",
+     *     type="integer",
+     *     in="formData",
+     *     required=true,
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Return book detail",
+     *     @SWG\Schema(
+     *         type=ResultDTO::class,
+     *         @SWG\Property(
+     *             property="data",
+     *             ref=@Model(type=Book::class)
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=422,
+     *     description="Validation error",
+     *     @SWG\Schema(ref=@Model(type=App\DTO\ErrorsDTO::class)),
+     * )
      */
     public function update(Book $book, Request $request): View
     {

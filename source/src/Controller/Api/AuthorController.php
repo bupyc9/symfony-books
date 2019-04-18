@@ -18,8 +18,10 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\View\View;
 use LogicException;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Psr\Cache\CacheException;
 use Psr\Cache\InvalidArgumentException;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Form\Exception\AlreadySubmittedException;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,6 +89,8 @@ class AuthorController extends AbstractFOSRestController
     }
 
     /**
+     * List of authors.
+     *
      * @param ParamFetcher $paramFetcher
      *
      * @throws LogicException
@@ -99,6 +103,46 @@ class AuthorController extends AbstractFOSRestController
      * @Rest\Get("/authors", name="api_authors")
      * @Rest\QueryParam(name="page", default="1", allowBlank=false, requirements="\d+")
      * @Rest\QueryParam(name="count", default=AuthorController::ITEMS_ON_PAGE, allowBlank=false, requirements="\d+")
+     *
+     * @SWG\Tag(name="Authors")
+     *
+     * @SWG\Parameter(
+     *     name="page",
+     *     in="query",
+     *     type="integer",
+     *     default="1",
+     * )
+     * @SWG\Parameter(
+     *     name="count",
+     *     in="query",
+     *     type="integer",
+     *     default=AuthorController::ITEMS_ON_PAGE,
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Return author list",
+     *     @SWG\Schema(
+     *         type=ResultDTO::class,
+     *         @SWG\Property(
+     *             property="data",
+     *             type="object",
+     *             @SWG\Property(
+     *                 property="items", @SWG\Items(ref=@Model(type=Author::class)),
+     *             ),
+     *             @SWG\Property(
+     *                 property="meta", ref=@Model(type=\App\DTO\CollectionMetaDTO::class),
+     *             ),
+     *             @SWG\Property(
+     *                 property="links", ref=@Model(type=\App\DTO\LinksDTO::class),
+     *             ),
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Page not found",
+     *     @SWG\Schema(ref=@Model(type=App\DTO\ErrorsDTO::class)),
+     * )
      */
     public function index(ParamFetcher $paramFetcher): View
     {
@@ -119,6 +163,8 @@ class AuthorController extends AbstractFOSRestController
     }
 
     /**
+     * Author detail.
+     *
      * @param int $id
      *
      * @throws CacheException
@@ -127,6 +173,31 @@ class AuthorController extends AbstractFOSRestController
      * @return View
      *
      * @Rest\Get("/authors/{id<\d+>}", name="api_author_show")
+     *
+     * @SWG\Tag(name="Authors")
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="integer",
+     *     description="Author ID",
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Return author detail",
+     *     @SWG\Schema(
+     *         type=ResultDTO::class,
+     *         @SWG\Property(
+     *             property="data",
+     *             ref=@Model(type=Author::class)
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Author not found",
+     *     @SWG\Schema(ref=@Model(type=App\DTO\ErrorsDTO::class)),
+     * )
      */
     public function show(int $id): View
     {
@@ -149,6 +220,8 @@ class AuthorController extends AbstractFOSRestController
     }
 
     /**
+     * Remove author.
+     *
      * @param Author $author
      *
      * @throws LogicException
@@ -157,6 +230,31 @@ class AuthorController extends AbstractFOSRestController
      * @return View
      *
      * @Rest\Delete("/authors/{id<\d+>}", name="api_author_destroy")
+     *
+     * @SWG\Tag(name="Authors")
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="integer",
+     *     description="Author ID",
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @SWG\Schema(
+     *         type=ResultDTO::class,
+     *         @SWG\Property(
+     *             property="data",
+     *             ref=@Model(type=SuccessDTO::class),
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Author not found",
+     *     @SWG\Schema(ref=@Model(type=App\DTO\ErrorsDTO::class)),
+     * )
      */
     public function destroy(Author $author): View
     {
@@ -172,6 +270,8 @@ class AuthorController extends AbstractFOSRestController
     }
 
     /**
+     * Create author.
+     *
      * @param Request $request
      *
      * @throws AlreadySubmittedException
@@ -182,6 +282,46 @@ class AuthorController extends AbstractFOSRestController
      * @return View
      *
      * @Rest\Post("/authors", name="api_author_store")
+     *
+     * @SWG\Tag(name="Authors")
+     *
+     * @SWG\Parameter(
+     *     name="first_name",
+     *     type="string",
+     *     in="formData",
+     *     required=true,
+     *     description="Min length - 1, Max length - 255",
+     * )
+     * @SWG\Parameter(
+     *     name="last_name",
+     *     type="string",
+     *     in="formData",
+     *     required=true,
+     *     description="Min length - 1, Max length - 255",
+     * )
+     * @SWG\Parameter(
+     *     name="second_name",
+     *     type="string",
+     *     in="formData",
+     *     required=false,
+     *     description="Min length - 1, Max length - 255",
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Return author detail",
+     *     @SWG\Schema(
+     *         type=ResultDTO::class,
+     *         @SWG\Property(
+     *             property="data",
+     *             ref=@Model(type=Author::class)
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=422,
+     *     description="Validation error",
+     *     @SWG\Schema(ref=@Model(type=App\DTO\ErrorsDTO::class)),
+     * )
      */
     public function store(Request $request): View
     {
@@ -214,6 +354,8 @@ class AuthorController extends AbstractFOSRestController
     }
 
     /**
+     * Edit author.
+     *
      * @param Author  $author
      * @param Request $request
      *
@@ -225,6 +367,52 @@ class AuthorController extends AbstractFOSRestController
      * @return View
      *
      * @Rest\Put("/authors/{id<\d+>}", name="api_author_update")
+     *
+     * @SWG\Tag(name="Authors")
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="integer",
+     *     description="Author ID",
+     * )
+     * @SWG\Parameter(
+     *     name="first_name",
+     *     type="string",
+     *     in="formData",
+     *     required=true,
+     *     description="Min length - 1, Max length - 255",
+     * )
+     * @SWG\Parameter(
+     *     name="last_name",
+     *     type="string",
+     *     in="formData",
+     *     required=true,
+     *     description="Min length - 1, Max length - 255",
+     * )
+     * @SWG\Parameter(
+     *     name="second_name",
+     *     type="string",
+     *     in="formData",
+     *     required=false,
+     *     description="Min length - 1, Max length - 255",
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Return author detail",
+     *     @SWG\Schema(
+     *         type=ResultDTO::class,
+     *         @SWG\Property(
+     *             property="data",
+     *             ref=@Model(type=Author::class)
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=422,
+     *     description="Validation error",
+     *     @SWG\Schema(ref=@Model(type=App\DTO\ErrorsDTO::class)),
+     * )
      */
     public function update(Author $author, Request $request): View
     {

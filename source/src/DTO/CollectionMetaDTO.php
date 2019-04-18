@@ -4,20 +4,28 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
+use Swagger\Annotations as SWG;
+
 class CollectionMetaDTO
 {
     /**
      * @var int
+     *
+     * @SWG\Property(type="integer", property="current_page")
      */
     private $currentPage;
 
     /**
      * @var int
+     *
+     * @SWG\Property(type="integer", property="last_page")
      */
     private $lastPage;
 
     /**
      * @var int
+     *
+     * @SWG\Property(type="integer", property="count")
      */
     private $count;
 

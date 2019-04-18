@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
+
 class ErrorsDTO
 {
     /**
      * @var ErrorDTO
+     *
+     * @SWG\Property(ref=@Model(type=ErrorDTO::class), property="error")
      */
     private $error;
 

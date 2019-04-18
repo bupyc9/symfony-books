@@ -4,25 +4,35 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
+use Swagger\Annotations as SWG;
+
 class LinksDTO
 {
     /**
      * @var string|null
+     *
+     * @SWG\Property(type="string", property="first", example="/link?page=1&count=20")
      */
     private $first;
 
     /**
      * @var string|null
+     *
+     * @SWG\Property(type="string", property="last", example="/link?page=5&count=20")
      */
     private $last;
 
     /**
      * @var string|null
+     *
+     * @SWG\Property(type="string", property="prev", example="/link?page=1&count=20")
      */
     private $prev;
 
     /**
      * @var string|null
+     *
+     * @SWG\Property(type="string", property="next", example="/link?page=2&count=20")
      */
     private $next;
 
