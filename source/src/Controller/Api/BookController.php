@@ -12,6 +12,7 @@ use App\Entity\Book;
 use App\Exception\FormValidationException;
 use App\Form\StoreBookForm;
 use App\Pagination\PaginationFactory;
+use App\Repository\BookRepository;
 use App\Service\Cache;
 use Doctrine\ORM\NonUniqueResultException;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -39,6 +40,11 @@ class BookController extends AbstractFOSRestController
      * @var TagAwareAdapterInterface
      */
     private $cache;
+
+    /**
+     * @var BookRepository
+     */
+    private $repository;
 
     /**
      * @param PaginationFactory $paginationFactory
@@ -69,6 +75,20 @@ class BookController extends AbstractFOSRestController
     }
 
     /**
+     * @param BookRepository $repository
+     *
+     * @return BookController
+     *
+     * @required
+     */
+    public function setRepository(BookRepository $repository): self
+    {
+        $this->repository = $repository;
+
+        return $this;
+    }
+
+    /**
      * @param ParamFetcher $paramFetcher
      *
      * @throws CacheException
@@ -88,7 +108,7 @@ class BookController extends AbstractFOSRestController
         $item = $this->cache->getItem($cacheKey);
 
         if (!$item->isHit()) {
-            $queryBuilder = $this->getDoctrine()->getRepository(Book::class)->createQueryBuilder('self')
+            $queryBuilder = $this->repository->createQueryBuilder('self')
                 ->join('self.author', 'author')
                 ->addSelect('author')
                 ->addOrderBy('self.createdAt', 'ASC')
@@ -112,7 +132,6 @@ class BookController extends AbstractFOSRestController
      * @throws CacheException
      * @throws InvalidArgumentException
      * @throws NonUniqueResultException
-     * @throws \LogicException
      *
      * @return View
      *
@@ -124,7 +143,7 @@ class BookController extends AbstractFOSRestController
         $item = $this->cache->getItem($cacheKey);
 
         if (!$item->isHit()) {
-            $book = $this->getDoctrine()->getRepository(Book::class)->createQueryBuilder('self')
+            $book = $this->repository->createQueryBuilder('self')
                 ->join('self.author', 'author')
                 ->addSelect('author')
                 ->where('self.id = :id')
