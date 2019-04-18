@@ -11,6 +11,7 @@ use App\Entity\Author;
 use App\Exception\FormValidationException;
 use App\Form\StoreAuthorForm;
 use App\Pagination\PaginationFactory;
+use App\Repository\AuthorRepository;
 use App\Service\Cache;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -37,6 +38,11 @@ class AuthorController extends AbstractFOSRestController
      * @var TagAwareAdapterInterface
      */
     private $cache;
+
+    /**
+     * @var AuthorRepository
+     */
+    private $repository;
 
     /**
      * @param PaginationFactory $paginationFactory
@@ -67,6 +73,20 @@ class AuthorController extends AbstractFOSRestController
     }
 
     /**
+     * @param AuthorRepository $repository
+     *
+     * @return AuthorController
+     *
+     * @required
+     */
+    public function setRepository(AuthorRepository $repository): self
+    {
+        $this->repository = $repository;
+
+        return $this;
+    }
+
+    /**
      * @param ParamFetcher $paramFetcher
      *
      * @throws LogicException
@@ -85,7 +105,7 @@ class AuthorController extends AbstractFOSRestController
         $cacheKey = Cache::createKey(__METHOD__);
         $item = $this->cache->getItem($cacheKey);
         if (!$item->isHit()) {
-            $queryBuilder = $this->getDoctrine()->getRepository(Author::class)->createQueryBuilder('self');
+            $queryBuilder = $this->repository->createQueryBuilder('self');
 
             $dto = new ResultDTO($this->paginationFactory->createCollection($paramFetcher, $queryBuilder, 'api_authors'));
 
@@ -103,7 +123,6 @@ class AuthorController extends AbstractFOSRestController
      *
      * @throws CacheException
      * @throws InvalidArgumentException
-     * @throws LogicException
      *
      * @return View
      *
@@ -114,7 +133,7 @@ class AuthorController extends AbstractFOSRestController
         $cacheKey = Cache::createKey(__METHOD__.$id);
         $item = $this->cache->getItem($cacheKey);
         if (!$item->isHit()) {
-            $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
+            $author = $this->repository->find($id);
             if (null === $author) {
                 throw new NotFoundHttpException('Author not found');
             }
